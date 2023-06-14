@@ -1,14 +1,20 @@
 package com.app.entities;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -64,9 +70,10 @@ public class User extends BaseEntity {
     
     @Enumerated(EnumType.STRING)
     @Column(length=10)
-    @NotNull(message="Role must be selected")
+    @NotNull(message="Role must be supplied")
     private Role role;
     
-    
+    @OneToMany(mappedBy="usr", cascade=CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private Set<Campaign> campaign=new HashSet<Campaign>();
 	
 }
